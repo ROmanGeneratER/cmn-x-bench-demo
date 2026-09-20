@@ -1,0 +1,284 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'>
+<meta http-equiv='Cache-Control' content='no-cache, no-store, must-revalidate'>
+<meta http-equiv='Pragma' content='no-cache'>
+<meta http-equiv='Expires' content='0'>
+<meta name='viewport' content='width=device-width,initial-scale=1'>
+<meta name='description' content='cmn-X Bench: Mandarin-centric code-switching TTS benchmark, TL-WER metric, and localized-reward GRPO post-training of CosyVoice3 with audio comparisons.'>
+<title>cmn-X Bench | Multilingual Code-Switching TTS Demo</title>
+<style>
+:root{--ink:#172033;--mut:#667085;--line:#dce3ed;--acc:#185fd1;--acc2:#7347d8;
+--bg:#f5f7fb;--card:#fff;--base:#f1f3f6;--lm:#edf4ff;--fm:#edf9f3;--joint:#fff4e6;}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;scroll-padding-top:74px}
+body{margin:0;background:var(--bg);color:var(--ink);
+font:16px/1.68 "Segoe UI",-apple-system,BlinkMacSystemFont,"Noto Sans SC",
+"PingFang SC","Microsoft YaHei",sans-serif;}
+header.hero{position:relative;overflow:hidden;background:
+radial-gradient(circle at 15% 5%,#dbeafe 0,transparent 34%),
+radial-gradient(circle at 88% 12%,#eee6ff 0,transparent 32%),#fff;
+padding:66px 20px 46px;text-align:center;border-bottom:1px solid var(--line)}
+.eyebrow{display:inline-block;margin:0 0 14px;padding:5px 11px;border:1px solid #cbd8ed;
+border-radius:999px;background:#ffffffb8;color:#315483;font-size:12px;font-weight:750;
+letter-spacing:.08em;text-transform:uppercase}
+header.hero h1{font-size:clamp(30px,4.4vw,50px);line-height:1.14;font-weight:780;
+letter-spacing:-.025em;margin:0 auto 14px;max-width:1100px}
+.lead{margin:0 auto;max-width:880px;color:#475467;font-size:15px}
+.lead + .lead{margin-top:5px}
+.stats{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:24px auto 0}
+.stat{min-width:146px;padding:10px 16px;border:1px solid #d8e1ee;border-radius:12px;
+background:#ffffffd9;box-shadow:0 7px 24px #1f4b7a0d;color:#344054;font-size:12.5px}
+.stat strong{display:block;color:var(--ink);font-size:18px;line-height:1.25}
+.language-switch{display:inline-flex;align-items:center;gap:3px;margin-right:5px;padding:3px;
+border:1px solid #d6deea;border-radius:999px;background:#f5f7fb}
+.language-switch button{border:0;border-radius:999px;background:transparent;color:#667085;
+padding:5px 10px;font:inherit;font-size:12px;font-weight:750;cursor:pointer}
+.language-switch button.active{background:#fff;color:var(--acc);box-shadow:0 1px 5px #1822301f}
+.language-switch button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+nav{position:sticky;top:0;z-index:9;background:#ffffffef;backdrop-filter:blur(10px);
+border-bottom:1px solid var(--line);display:flex;justify-content:center;gap:6px;
+padding:9px 12px;flex-wrap:wrap;box-shadow:0 4px 18px #1d293908}
+nav a{text-decoration:none;color:#475467;font-size:12.5px;font-weight:650;padding:5px 11px;
+border-radius:999px;border:1px solid transparent}
+nav a:hover,nav a:focus-visible{background:#eef4ff;color:var(--acc);border-color:#cadbf7}
+main{max-width:1440px;margin:0 auto;padding:12px 22px 44px}
+h2.sec{text-align:center;font-size:24px;margin:46px 0 6px;font-weight:750;
+border-bottom:0;padding-bottom:0;}
+h2.sec:after{content:"";display:block;width:64px;height:2px;background:var(--acc);
+margin:9px auto 0;}
+h2.sec span{display:block;color:var(--mut);font-weight:400;font-size:13px;
+margin-top:7px;}
+h2.sec>[data-i18n-en]{display:inline;color:inherit;font-weight:750;font-size:inherit;margin:0}
+.legend{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;font-size:12.5px;
+color:var(--mut);margin:6px 0 14px;}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;
+vertical-align:-1px;}
+.abstract-grid{display:grid;grid-template-columns:1fr;gap:16px;margin:22px auto 16px;
+max-width:960px}
+.abstract-card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+padding:22px 24px;box-shadow:0 10px 28px #1d29390b;color:#283548;text-align:justify;
+font-size:14.5px}
+.abstract-card h3{margin:0 0 10px;color:var(--ink);font-size:15px;text-align:left}
+.resources{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:18px 0 22px}
+.resources a{display:inline-flex;align-items:center;gap:7px;padding:9px 15px;border:1px solid #cfd9e8;
+border-radius:9px;background:#fff;color:#253b5b;text-decoration:none;font-size:13px;font-weight:700}
+.resources a:hover,.resources a:focus-visible{border-color:var(--acc);color:var(--acc);box-shadow:0 6px 18px #185fd116}
+.resources small{color:#8a94a5;font-weight:500}
+.architecture{margin:18px auto 10px;max-width:1400px;background:#fff;border:1px solid var(--line);
+border-radius:14px;padding:14px;box-shadow:0 12px 32px #1d29390b}
+.architecture-link{display:block;line-height:0}
+.architecture img{width:100%;height:auto;margin:0;border:0;border-radius:8px;background:#fff}
+.architecture figcaption{padding:8px 8px 2px;text-align:center;color:var(--mut);font-size:12.5px}
+.protocol{max-width:1040px;margin:16px auto 0;border:1px solid var(--line);border-radius:10px;
+background:#fff;padding:0 16px;color:#475467;font-size:13px}
+.protocol summary{cursor:pointer;padding:10px 0;font-weight:700;color:#344054}
+.protocol p{margin:0 0 12px}
+.scroll{overflow-x:auto;overscroll-behavior-x:contain;scrollbar-gutter:stable;padding-bottom:8px;}
+table{border-collapse:separate;border-spacing:0;width:100%;background:#fff;border:1px solid var(--line);
+border-radius:10px;overflow:hidden}
+th,td{border:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line);
+padding:8px 9px;font-size:13px;vertical-align:middle}
+tr:last-child td{border-bottom:0} th:last-child,td:last-child{border-right:0}
+th{background:#f7f9fc;text-align:left;font-weight:700;color:#344054}
+th small{display:block;font-weight:400;color:var(--mut);}
+th.h-base{background:var(--base);color:#555;}
+th.h-lm{background:var(--lm);color:#1d4ed8;}
+th.h-fm{background:var(--fm);color:#067647;}
+th.h-joint{background:var(--joint);color:#b45309;}
+td.prompt{font-size:13px;color:#2c3e50;background:#fcfcfc;
+position:sticky;left:0;z-index:1;box-shadow:1px 0 0 var(--line);}
+td.glabel{text-align:center;font-weight:700;color:var(--mut);background:#fafafa;}
+td.audio{text-align:center;}
+td.audio audio{display:block;width:100%;max-width:none;height:34px;}
+td.none{color:#aaa;text-align:center;font-size:12px;}
+table.rank{table-layout:fixed;min-width:920px;max-width:none;margin:0;}
+table.rank.rank-detail{min-width:1120px;}
+table.rank th,table.rank td{text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums;}
+table.rank th:nth-child(-n+3),table.rank td:nth-child(-n+3){text-align:left;}
+table.comparison-table{table-layout:fixed;min-width:1120px;}
+table.comparison-table th{text-align:center;}
+table.comparison-table th:first-child{text-align:left;}
+tr.r-lm td:nth-child(2){color:#1d4ed8;font-weight:600;}
+tr.r-fm td:nth-child(2){color:#067647;font-weight:600;}
+tr.r-joint td:nth-child(2){color:#b45309;font-weight:600;}
+tr.r-base td{background:#f7f7f7;color:#555;}
+tr.is-best td{background:#fff9ed}
+tr.is-best td:nth-child(1),tr.is-best td:nth-child(9){color:#9a4f00;font-weight:800}
+table.prompttbl{max-width:1040px;margin:0 auto;}
+table.prompttbl{table-layout:fixed;min-width:860px;}
+table.prompttbl td:nth-child(1){width:230px;font-weight:700;color:#333;}
+table.prompttbl td:nth-child(2){width:320px;text-align:center;}
+table.prompttbl td:nth-child(2) audio{width:300px;height:38px;}
+table.prompttbl td:nth-child(3){font-size:13px;color:#444;}
+
+footer{text-align:center;color:#7b8493;font-size:12px;padding:30px 16px 46px;
+border-top:1px solid var(--line);margin-top:30px;background:#fff}
+@media(max-width:900px){
+  .abstract-card{padding:18px}
+  main{padding-left:14px;padding-right:14px}header.hero{padding:48px 16px 36px}
+}
+@media(max-width:560px){
+  nav{justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto}
+  nav a{white-space:nowrap}.stats{gap:7px}.stat{min-width:128px;padding:9px 11px}
+  h2.sec{font-size:21px;margin-top:38px}.abstract-card{font-size:14px;text-align:left}
+}
+
+table.prompttbl{max-width:1040px;margin:0 auto;}
+table.prompttbl td:nth-child(1){width:230px;font-weight:700;color:#333;}
+table.prompttbl td:nth-child(2){width:320px;text-align:center;}
+table.prompttbl td:nth-child(2) audio{width:300px;height:38px;}
+table.prompttbl td:nth-child(3){font-size:13px;color:#444;}
+</style><meta name='keywords' content='multilingual TTS, Mandarin-centric code-switching, speech evaluation, localized reward, GRPO'>
+</head><body data-language='en'>
+<header class='hero'>
+<p class='eyebrow' data-i18n-en='Research Demo' data-i18n-zh='研究演示'>Research Demo</p>
+<h1 data-lang='en'>cmn-X Bench: Target-Span Evaluation and Localized-Reward Post-Training for Multilingual Code-Switching TTS</h1>
+<h1 data-lang='zh-CN' lang='zh-CN' hidden>cmn-X Bench：面向多语种语码转换语音合成的目标片段评测与局部奖励后训练</h1>
+<p class='lead' data-lang='en'>Interactive audio comparisons across six Mandarin-centered language pairs, using identical text and reference voice within each comparison row.</p>
+<p class='lead' data-lang='zh-CN' lang='zh-CN' hidden>覆盖六种以普通话为主的语言组合；同一对比行采用相同文本与参考音色，便于直接比较不同训练方案。</p>
+<div class='stats' aria-label='Demo summary'>
+  <div class='stat'><strong>6</strong><span data-i18n-en='language pairs' data-i18n-zh='种语言组合'>language pairs</span></div>
+  <div class='stat'><strong>4</strong><span data-i18n-en='system families' data-i18n-zh='种系统类型'>system families</span></div>
+  <div class='stat'><strong>96</strong><span data-i18n-en='comparison samples' data-i18n-zh='个对比音频'>comparison samples</span></div>
+</div>
+</header>
+<nav aria-label='Page sections'><div class='language-switch' role='group' aria-label='Language / 语言'><button type='button' class='active' data-language-option='en' aria-pressed='true' onclick="setLanguage('en')">English</button><button type='button' data-language-option='zh-CN' aria-pressed='false' onclick="setLanguage('zh-CN')">中文</button></div><a href='#paper' data-i18n-en='Overview' data-i18n-zh='概览'>Overview</a><a href='#prompts' data-i18n-en='Voices' data-i18n-zh='参考音色'>Voices</a><a href='#rank' data-i18n-en='Results' data-i18n-zh='总体结果'>Results</a><a href='#cmn-eng' data-i18n-en='EN' data-i18n-zh='中英'>EN</a><a href='#cmn-jpn' data-i18n-en='JA' data-i18n-zh='中日'>JA</a><a href='#cmn-kor' data-i18n-en='KO' data-i18n-zh='中韩'>KO</a><a href='#cmn-deu' data-i18n-en='DE' data-i18n-zh='中德'>DE</a><a href='#cmn-fra' data-i18n-en='FR' data-i18n-zh='中法'>FR</a><a href='#cmn-spa' data-i18n-en='ES' data-i18n-zh='中西'>ES</a></nav><main>
+<h2 class='sec' id='paper'><span data-i18n-en='Overview' data-i18n-zh='研究概览'>Overview</span><span data-lang='en'>Abstract and system architecture</span><span data-lang='zh-CN' lang='zh-CN' hidden>摘要与系统架构</span></h2>
+<div class='abstract-grid'>
+<article class='abstract-card' data-lang='en' lang='en'><h3>Abstract</h3>Mandarin-centric code-switching text-to-speech (TTS) must render foreign expressions accurately while preserving Mandarin speaker identity and speech quality. Whole-utterance error metrics can obscure recognition failures on short foreign spans. We introduce cmn-X Bench, a benchmark for Mandarin-centric code-switching ASR evaluation, and Tagged Language WER (TL-WER), which scores embedded foreign spans by capped character-edit distance against their closest transcript windows. A LoRA-finetuned Qwen3-ASR evaluator reduces whole-utterance WER from 14.6% to 2.1% and TL-WER from 31.5% to 4.3% on benchmark audio. We combine its content scores with language, speaker, and quality feedback for CosyVoice3 GRPO post-training and ablate content reward, LID feedback, and LM/FM update scope. With TL-WER reward and LID feedback, joint LM–FM training reduces macro TL-WER from 15.41% to 6.45%, exceeding either single-component update, while FM-only training achieves the highest speaker similarity. On the public Minimax Test Set, the best configuration reduces overall WER from 9.85% to 8.18%, though gains vary across languages. Content and language rewards show complementary effects. Audio comparisons between the Base and GRPO-post-trained TTS systems are available on this demo page.</article>
+<article class='abstract-card' data-lang='zh-CN' lang='zh-CN' hidden><h3>摘要</h3>以普通话为主导的语码转换语音合成（TTS）需要在保持说话人音色与语音质量的同时，准确合成嵌入的外语表达。然而，整句级错误率指标可能掩盖短外语片段中的识别错误。本文提出面向普通话主导语码转换语音识别（ASR）的评测基准 cmn-X Bench，以及基于语言标签的词错误率指标（Tagged Language WER，TL-WER）。该指标通过计算嵌入外语片段与识别转写中最佳匹配窗口之间的字符级编辑距离，并对距离进行上限截断，实现片段级评测。经低秩适配（LoRA）微调的 Qwen3-ASR 评测模型在基准音频上将整句词错误率从 14.6% 降至 2.1%，将 TL-WER 从 31.5% 降至 4.3%。在此基础上，本文将该模型的内容评分与语种、说话人及语音质量反馈相结合，对 CosyVoice3 进行组相对策略优化（GRPO）后训练，并通过消融实验考察内容奖励、语种识别（LID）反馈及语言模型（LM）与流匹配（FM）模块更新范围的影响。采用 TL-WER 奖励与 LID 反馈时，联合更新 LM 与 FM 将宏平均 TL-WER 从 15.41% 降至 6.45%，优于仅更新其中一个模块的方案；仅更新 FM 则获得了最高的说话人相似度。在公开的 Minimax 测试集上，最优配置将整体词错误率从 9.85% 降至 8.18%，但不同语种上的收益存在差异。实验结果表明，内容奖励与语种奖励具有互补作用。基线系统与 GRPO 后训练系统的合成语音对比样例见本文演示页面。<p class='kw'><b>关键词：</b>多语种语音合成；普通话主导语码转换；语音评测；局部奖励；组相对策略优化</p></article>
+</div>
+<div class='resources' aria-label='Release links'>
+  <a href='https://arxiv.org/abs/XXXX.XXXXX' target='_blank' rel='noopener'><span data-i18n-en='Paper' data-i18n-zh='论文'>Paper</span> <small data-i18n-en='coming soon' data-i18n-zh='即将发布'>coming soon</small></a>
+  <a href='https://github.com/ROmanGeneratER/cmn-x-bench-demo' target='_blank' rel='noopener'><span data-i18n-en='Demo Repository' data-i18n-zh='演示仓库'>Demo Repository</span></a>
+  <a href='https://huggingface.co/your-org/qwen3-cs-asr-1.7B' target='_blank' rel='noopener'><span data-i18n-en='Model' data-i18n-zh='模型'>Model</span> <small data-i18n-en='coming soon' data-i18n-zh='即将发布'>coming soon</small></a>
+</div>
+<figure class='architecture'><a class='architecture-link' href='assets/overview_architecture.pdf' target='_blank' rel='noopener'><img src='assets/overview_architecture.png' alt='Overview of CS-ASR adaptation and localized-reward GRPO post-training for CosyVoice3' width='3823' height='1787'></a><figcaption><span data-lang='en'>System overview: frozen evaluation signals guide LM, FM, or joint GRPO updates.</span><span data-lang='zh-CN' lang='zh-CN' hidden>系统概览：冻结的评估信号用于指导 LM、FM 或联合 GRPO 更新。</span></figcaption></figure>
+<h2 class='sec' id='prompts'><span data-i18n-en='Reference voices' data-i18n-zh='参考音色'>Reference voices</span><span data-lang='en'>The two zero-shot prompts shared by all comparison rows</span><span data-lang='zh-CN' lang='zh-CN' hidden>所有对比行共享的两个零样本参考音色</span></h2><div class='scroll'><table class='prompttbl'>
+<tr><td class='cell' data-i18n-en='Female reference voice' data-i18n-zh='女性参考音色'>Female reference voice</td><td class='audio'><audio controls preload='none' src='prompts/common_voice_zh-CN_41697648.mp3'></audio></td><td class='hyp'>之前看到一个视频说某国际大学的一个研究人工智能的博士发表了一篇题为大语言模型会自发产生智能的论文这是对这所国际百年名校的最大耻辱</td></tr>
+<tr><td class='cell' data-i18n-en='Male reference voice' data-i18n-zh='男性参考音色'>Male reference voice</td><td class='audio'><audio controls preload='none' src='prompts/common_voice_zh-CN_41581691.mp3'></audio></td><td class='hyp'>语音识别是实现人机交互的一种重要途径是自然语言处理的技术环节随着人工智能技术的发展人机交互等大量应用场景存在着流逝语音识别的需求</td></tr>
+</table></div>
+<details class='protocol'><summary data-i18n-en='Demo protocol' data-i18n-zh='演示说明'>Demo protocol</summary><p data-lang='en'>The female samples use the standard text-normalization pipeline. The male samples were synthesized with <code>text_frontend=False</code> because the normalization service was unavailable at synthesis time. For a controlled listening comparison, compare systems within the same voice row.</p><p data-lang='zh-CN' lang='zh-CN' hidden>女性样本采用标准文本规范化流程；男性样本生成时因规范化服务不可用，使用了 <code>text_frontend=False</code>。进行受控听感比较时，请在同一音色行内比较不同系统。</p></details>
+<h2 class='sec' id='rank'><span data-i18n-en='Overall ranking' data-i18n-zh='总体结果'>Overall ranking</span><span data-lang='en'>cmn-X Bench macro TL-WER (%), best checkpoint per configuration; lower is better</span><span data-lang='zh-CN' lang='zh-CN' hidden>cmn-X Bench 宏平均 TL-WER（%）；每项配置取最佳检查点，数值越低越好</span></h2>
+<div style='text-align:center'><div class='language-switch' role='group' aria-label='Table view'><button type='button' class='active' data-rank='overall' onclick="showRank('overall')">Overall</button><button type='button' data-rank='cs90' onclick="showRank('cs90')">cmn-X Bench</button><button type='button' data-rank='mm' onclick="showRank('mm')">Minimax</button></div></div>
+<div id='rank-overall' class='scroll'><table class='rank rank-overall'><colgroup><col style='width:18%'><col style='width:14%'><col style='width:12%'><col style='width:11.2%'><col style='width:11.2%'><col style='width:11.2%'><col style='width:11.2%'><col style='width:11.2%'></colgroup><tr><th>Model</th><th>Content</th><th>LID</th><th>CER</th><th>TL-WER</th><th>SIM</th><th>DNS</th><th>MM-ALL</th></tr>
+<tr class='r-base'><td>&ndash;</td><td>Base (CosyVoice3)</td><td>&ndash;</td><td class='m'>6.75</td><td class='m'>15.41</td><td class='m'>0.875</td><td class='m'>4.08</td><td class='m'>9.85</td></tr>
+<tr class='r-lm'><td>LM-GRPO</td><td>TL-WER</td><td>w/ LID</td><td class='m'>3.68</td><td class='m'>7.75</td><td class='m'>0.926</td><td class='m'>4.24</td><td class='m'>8.18</td></tr>
+<tr class='r-lm'><td>LM-GRPO</td><td>TL-WER</td><td>w/o LID</td><td class='m'>4.03</td><td class='m'>10.29</td><td class='m'>0.906</td><td class='m'>4.17</td><td class='m'>8.84</td></tr>
+<tr class='r-lm'><td>LM-GRPO</td><td>WER</td><td>w/ LID</td><td class='m'>4.08</td><td class='m'>9.00</td><td class='m'>0.928</td><td class='m'>4.10</td><td class='m'>8.39</td></tr>
+<tr class='r-lm'><td>LM-GRPO</td><td>WER</td><td>w/o LID</td><td class='m'>3.93</td><td class='m'>8.06</td><td class='m'>0.917</td><td class='m'>4.23</td><td class='m'>8.22</td></tr>
+<tr class='r-fm'><td>FM-GRPO</td><td>TL-WER</td><td>w/ LID</td><td class='m'>6.59</td><td class='m'>14.74</td><td class='m'>0.938</td><td class='m'>4.02</td><td class='m'>9.77</td></tr>
+<tr class='r-fm'><td>FM-GRPO</td><td>TL-WER</td><td>w/o LID</td><td class='m'>6.05</td><td class='m'>14.85</td><td class='m'>0.887</td><td class='m'>4.10</td><td class='m'>9.85</td></tr>
+<tr class='r-fm'><td>FM-GRPO</td><td>WER</td><td>w/ LID</td><td class='m'>6.34</td><td class='m'>15.14</td><td class='m'>0.922</td><td class='m'>3.96</td><td class='m'>9.81</td></tr>
+<tr class='r-fm'><td>FM-GRPO</td><td>WER</td><td>w/o LID</td><td class='m'>6.04</td><td class='m'>12.57</td><td class='m'>0.897</td><td class='m'>3.68</td><td class='m'>10.00</td></tr>
+<tr class='r-joint'><td>FM+LM-GRPO</td><td>TL-WER</td><td>w/ LID</td><td class='m'>2.75</td><td class='m'>6.45</td><td class='m'>0.931</td><td class='m'>4.13</td><td class='m'>8.42</td></tr>
+<tr class='r-joint'><td>FM+LM-GRPO</td><td>TL-WER</td><td>w/o LID</td><td class='m'>3.76</td><td class='m'>9.05</td><td class='m'>0.930</td><td class='m'>4.10</td><td class='m'>8.45</td></tr>
+<tr class='r-joint'><td>FM+LM-GRPO</td><td>WER</td><td>w/ LID</td><td class='m'>3.33</td><td class='m'>8.04</td><td class='m'>0.929</td><td class='m'>4.17</td><td class='m'>8.50</td></tr>
+<tr class='r-joint'><td>FM+LM-GRPO</td><td>WER</td><td>w/o LID</td><td class='m'>3.79</td><td class='m'>8.54</td><td class='m'>0.920</td><td class='m'>4.27</td><td class='m'>8.22</td></tr></table></div>
+<div id='rank-cs90' class='scroll' style='display:none'><table class='rank rank-detail'><colgroup><col style='width:18%'><col style='width:12%'><col style='width:10%'><col style='width:7.5%'><col style='width:7.5%'><col style='width:7.5%'><col style='width:7.5%'><col style='width:7.5%'><col style='width:7.5%'><col style='width:7.5%'><col style='width:7.5%'></colgroup><tr><th>Model</th><th>Content</th><th>LID</th><th>EN</th><th>JA</th><th>KO</th><th>DE</th><th>FR</th><th>ES</th><th>ALL</th><th>&Delta;TL-WER</th></tr>
+<tr class='r-base'><td>&ndash;</td><td>Base (CosyVoice3)</td><td>&ndash;</td><td class='m'>0.47</td><td class='m'>32.81</td><td class='m'>29.51</td><td class='m'>14.50</td><td class='m'>9.93</td><td class='m'>5.22</td><td class='m'>15.41</td><td class='m dsh'>&ndash;</td></tr>
+<tr class='r-lm'><td>LM-GRPO</td><td>TL-WER</td><td>w/ LID</td><td class='m'>1.50</td><td class='m'>20.00</td><td class='m'>16.94</td><td class='m'>5.02</td><td class='m'>1.67</td><td class='m'>1.35</td><td class='m'>7.75</td><td class='m dlt'>-7.66</td></tr>
+<tr class='r-lm'><td>LM-GRPO</td><td>TL-WER</td><td>w/o LID</td><td class='m'>0.84</td><td class='m'>29.21</td><td class='m'>16.94</td><td class='m'>8.79</td><td class='m'>1.78</td><td class='m'>4.21</td><td class='m'>10.29</td><td class='m dlt'>-5.12</td></tr>
+<tr class='r-lm'><td>LM-GRPO</td><td>WER</td><td>w/ LID</td><td class='m'>0.28</td><td class='m'>22.70</td><td class='m'>13.66</td><td class='m'>12.97</td><td class='m'>1.88</td><td class='m'>2.53</td><td class='m'>9.00</td><td class='m dlt'>-6.41</td></tr>
+<tr class='r-lm'><td>LM-GRPO</td><td>WER</td><td>w/o LID</td><td class='m'>0.00</td><td class='m'>15.06</td><td class='m'>16.94</td><td class='m'>7.25</td><td class='m'>6.06</td><td class='m'>3.03</td><td class='m'>8.06</td><td class='m dlt'>-7.35</td></tr>
+<tr class='r-fm'><td>FM-GRPO</td><td>TL-WER</td><td>w/ LID</td><td class='m'>1.41</td><td class='m'>31.69</td><td class='m'>28.96</td><td class='m'>12.25</td><td class='m'>11.29</td><td class='m'>2.86</td><td class='m'>14.74</td><td class='m dlt'>-0.67</td></tr>
+<tr class='r-fm'><td>FM-GRPO</td><td>TL-WER</td><td>w/o LID</td><td class='m'>0.47</td><td class='m'>29.21</td><td class='m'>32.79</td><td class='m'>16.04</td><td class='m'>6.90</td><td class='m'>3.70</td><td class='m'>14.85</td><td class='m dlt'>-0.56</td></tr>
+<tr class='r-fm'><td>FM-GRPO</td><td>WER</td><td>w/ LID</td><td class='m'>0.75</td><td class='m'>32.58</td><td class='m'>31.15</td><td class='m'>13.74</td><td class='m'>8.05</td><td class='m'>4.55</td><td class='m'>15.14</td><td class='m dlt'>-0.27</td></tr>
+<tr class='r-fm'><td>FM-GRPO</td><td>WER</td><td>w/o LID</td><td class='m'>0.09</td><td class='m'>20.35</td><td class='m'>21.86</td><td class='m'>14.23</td><td class='m'>7.94</td><td class='m'>10.94</td><td class='m'>12.57</td><td class='m dlt'>-2.84</td></tr>
+<tr class='r-joint'><td>FM+LM-GRPO</td><td>TL-WER</td><td>w/ LID</td><td class='m'>0.00</td><td class='m'>20.90</td><td class='m'>8.20</td><td class='m'>4.18</td><td class='m'>2.40</td><td class='m'>3.03</td><td class='m'>6.45</td><td class='m dlt'>-8.96</td></tr>
+<tr class='r-joint'><td>FM+LM-GRPO</td><td>TL-WER</td><td>w/o LID</td><td class='m'>0.09</td><td class='m'>29.21</td><td class='m'>16.39</td><td class='m'>5.86</td><td class='m'>0.21</td><td class='m'>2.53</td><td class='m'>9.05</td><td class='m dlt'>-6.36</td></tr>
+<tr class='r-joint'><td>FM+LM-GRPO</td><td>WER</td><td>w/ LID</td><td class='m'>0.38</td><td class='m'>22.92</td><td class='m'>14.21</td><td class='m'>5.02</td><td class='m'>1.67</td><td class='m'>4.04</td><td class='m'>8.04</td><td class='m dlt'>-7.37</td></tr>
+<tr class='r-joint'><td>FM+LM-GRPO</td><td>WER</td><td>w/o LID</td><td class='m'>1.13</td><td class='m'>12.81</td><td class='m'>19.13</td><td class='m'>13.39</td><td class='m'>1.57</td><td class='m'>3.20</td><td class='m'>8.54</td><td class='m dlt'>-6.87</td></tr></table></div>
+<div id='rank-mm' class='scroll' style='display:none'><table class='rank rank-detail'><colgroup><col style='width:18%'><col style='width:12%'><col style='width:10%'><col style='width:6.666%'><col style='width:6.666%'><col style='width:6.666%'><col style='width:6.666%'><col style='width:6.666%'><col style='width:6.666%'><col style='width:6.666%'><col style='width:6.666%'><col style='width:6.666%'></colgroup><tr><th>Model</th><th>Content</th><th>LID</th><th>ZH</th><th>EN</th><th>JA</th><th>KO</th><th>DE</th><th>FR</th><th>ES</th><th>ALL</th><th>&Delta;WER</th></tr>
+<tr class='r-base'><td>&ndash;</td><td>Base (CosyVoice3)</td><td>&ndash;</td><td class='m'>1.38</td><td class='m'>2.25</td><td class='m'>52.46</td><td class='m'>5.81</td><td class='m'>0.80</td><td class='m'>4.96</td><td class='m'>1.25</td><td class='m'>9.85</td><td class='m dsh'>&ndash;</td></tr>
+<tr class='r-lm'><td>LM-GRPO</td><td>TL-WER</td><td>w/ LID</td><td class='m'>1.25</td><td class='m'>2.90</td><td class='m'>44.70</td><td class='m'>2.09</td><td class='m'>1.50</td><td class='m'>3.60</td><td class='m'>1.22</td><td class='m'>8.18</td><td class='m dlt'>-1.67</td></tr>
+<tr class='r-lm'><td>LM-GRPO</td><td>TL-WER</td><td>w/o LID</td><td class='m'>1.38</td><td class='m'>3.31</td><td class='m'>48.12</td><td class='m'>3.66</td><td class='m'>0.67</td><td class='m'>3.70</td><td class='m'>1.05</td><td class='m'>8.84</td><td class='m dlt'>-1.01</td></tr>
+<tr class='r-lm'><td>LM-GRPO</td><td>WER</td><td>w/ LID</td><td class='m'>1.71</td><td class='m'>2.74</td><td class='m'>44.81</td><td class='m'>3.64</td><td class='m'>0.96</td><td class='m'>4.00</td><td class='m'>0.89</td><td class='m'>8.39</td><td class='m dlt'>-1.46</td></tr>
+<tr class='r-lm'><td>LM-GRPO</td><td>WER</td><td>w/o LID</td><td class='m'>1.51</td><td class='m'>2.63</td><td class='m'>45.66</td><td class='m'>2.48</td><td class='m'>0.84</td><td class='m'>3.47</td><td class='m'>0.95</td><td class='m'>8.22</td><td class='m dlt'>-1.63</td></tr>
+<tr class='r-fm'><td>FM-GRPO</td><td>TL-WER</td><td>w/ LID</td><td class='m'>1.48</td><td class='m'>2.06</td><td class='m'>52.99</td><td class='m'>4.39</td><td class='m'>1.03</td><td class='m'>5.42</td><td class='m'>1.01</td><td class='m'>9.77</td><td class='m dlt'>-0.08</td></tr>
+<tr class='r-fm'><td>FM-GRPO</td><td>TL-WER</td><td>w/o LID</td><td class='m'>1.36</td><td class='m'>2.25</td><td class='m'>53.36</td><td class='m'>4.85</td><td class='m'>0.81</td><td class='m'>5.13</td><td class='m'>1.19</td><td class='m'>9.85</td><td class='m dlt'>+0.00</td></tr>
+<tr class='r-fm'><td>FM-GRPO</td><td>WER</td><td>w/ LID</td><td class='m'>1.24</td><td class='m'>1.83</td><td class='m'>53.37</td><td class='m'>4.98</td><td class='m'>0.74</td><td class='m'>5.49</td><td class='m'>1.05</td><td class='m'>9.81</td><td class='m dlt'>-0.04</td></tr>
+<tr class='r-fm'><td>FM-GRPO</td><td>WER</td><td>w/o LID</td><td class='m'>1.10</td><td class='m'>1.92</td><td class='m'>53.34</td><td class='m'>5.56</td><td class='m'>1.49</td><td class='m'>5.37</td><td class='m'>1.25</td><td class='m'>10.00</td><td class='m dlt'>+0.15</td></tr>
+<tr class='r-joint'><td>FM+LM-GRPO</td><td>TL-WER</td><td>w/ LID</td><td class='m'>0.99</td><td class='m'>3.01</td><td class='m'>45.64</td><td class='m'>3.73</td><td class='m'>0.92</td><td class='m'>3.50</td><td class='m'>1.15</td><td class='m'>8.42</td><td class='m dlt'>-1.43</td></tr>
+<tr class='r-joint'><td>FM+LM-GRPO</td><td>TL-WER</td><td>w/o LID</td><td class='m'>1.37</td><td class='m'>2.63</td><td class='m'>46.18</td><td class='m'>3.51</td><td class='m'>0.89</td><td class='m'>3.55</td><td class='m'>1.03</td><td class='m'>8.45</td><td class='m dlt'>-1.40</td></tr>
+<tr class='r-joint'><td>FM+LM-GRPO</td><td>WER</td><td>w/ LID</td><td class='m'>1.40</td><td class='m'>2.75</td><td class='m'>46.17</td><td class='m'>2.45</td><td class='m'>0.72</td><td class='m'>5.01</td><td class='m'>0.99</td><td class='m'>8.50</td><td class='m dlt'>-1.35</td></tr>
+<tr class='r-joint'><td>FM+LM-GRPO</td><td>WER</td><td>w/o LID</td><td class='m'>1.51</td><td class='m'>1.99</td><td class='m'>45.19</td><td class='m'>2.79</td><td class='m'>0.80</td><td class='m'>4.09</td><td class='m'>1.17</td><td class='m'>8.22</td><td class='m dlt'>-1.63</td></tr></table></div>
+<script>function showRank(k){['overall','cs90','mm'].forEach(function(x){document.getElementById('rank-'+x).style.display=(x===k)?'':'none';});document.querySelectorAll('[data-rank]').forEach(function(b){b.classList.toggle('active', b.dataset.rank===k);b.setAttribute('aria-pressed', b.dataset.rank===k);});}</script>
+<h2 class='sec' id='cmn-eng'><span data-i18n-en='Chinese–English' data-i18n-zh='中文–英语'>Chinese–English</span></h2>
+<div class='scroll'><table class='comparison-table'><colgroup><col style='width:30%'><col style='width:8%'><col style='width:15.5%'><col style='width:15.5%'><col style='width:15.5%'><col style='width:15.5%'></colgroup><tr><th data-i18n-en='Prompt' data-i18n-zh='文本'>Prompt</th><th data-i18n-en='Voice' data-i18n-zh='音色'>Voice</th><th class='h-base'>Base</th><th class='h-lm'>LM-GRPO</th><th class='h-fm'>FM-GRPO</th><th class='h-joint'>FM+LM-GRPO</th></tr>
+<tr><td class='prompt' rowspan='2'>在 develop 新的 API 时，我们要 ensure 它是 scalable 和 secure，同时 provide clear documentation 和 software development kits 给 developers，这样能 accelerate 他们的 integration process 并 reduce support tickets，最终 improve 整体的 developer experience 体验.</td><td class='glabel'>女</td><td class='audio'><audio controls preload='none' src='audio/Base/t_en_4f7d82ae7c21.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/LM-GRPO_TL-WER_w-_LID/t_en_4f7d82ae7c21.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/FM-GRPO_WER_w-o_LID/t_en_4f7d82ae7c21.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/FM+LM-GRPO_WER_w-_LID/t_en_4f7d82ae7c21.wav'></audio></td></tr>
+<tr><td class='glabel'>男</td><td class='audio'><audio controls preload='none' src='audio_male/Base/t_en_4f7d82ae7c21.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/LM-GRPO_TL-WER_w-_LID/t_en_4f7d82ae7c21.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/FM-GRPO_WER_w-o_LID/t_en_4f7d82ae7c21.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/FM+LM-GRPO_WER_w-_LID/t_en_4f7d82ae7c21.wav'></audio></td></tr>
+<tr><td class='prompt' rowspan='2'>请 prepare 一份 detailed competitive analysis，compare 我们的 product features 和 pricing 与 top competitors，identify 我们的 unique selling propositions，并 suggest actionable recommendations 来 improve 我们的 market position.</td><td class='glabel'>女</td><td class='audio'><audio controls preload='none' src='audio/Base/t_en_74facc7c4649.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/LM-GRPO_TL-WER_w-_LID/t_en_74facc7c4649.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/FM-GRPO_WER_w-o_LID/t_en_74facc7c4649.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/FM+LM-GRPO_WER_w-_LID/t_en_74facc7c4649.wav'></audio></td></tr>
+<tr><td class='glabel'>男</td><td class='audio'><audio controls preload='none' src='audio_male/Base/t_en_74facc7c4649.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/LM-GRPO_TL-WER_w-_LID/t_en_74facc7c4649.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/FM-GRPO_WER_w-o_LID/t_en_74facc7c4649.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/FM+LM-GRPO_WER_w-_LID/t_en_74facc7c4649.wav'></audio></td></tr>
+</table></div>
+<h2 class='sec' id='cmn-jpn'><span data-i18n-en='Chinese–Japanese' data-i18n-zh='中文–日语'>Chinese–Japanese</span></h2>
+<div class='scroll'><table class='comparison-table'><colgroup><col style='width:30%'><col style='width:8%'><col style='width:15.5%'><col style='width:15.5%'><col style='width:15.5%'><col style='width:15.5%'></colgroup><tr><th data-i18n-en='Prompt' data-i18n-zh='文本'>Prompt</th><th data-i18n-en='Voice' data-i18n-zh='音色'>Voice</th><th class='h-base'>Base</th><th class='h-lm'>LM-GRPO</th><th class='h-fm'>FM-GRPO</th><th class='h-joint'>FM+LM-GRPO</th></tr>
+<tr><td class='prompt' rowspan='2'>今天那个会议真的是マジでしんどい，上司一直在那里喋喋不休，てか納期根本来不及好吗，もう無理，我现在的メンタル简直ヤバい到极点，只想赶紧下班回家躺着。</td><td class='glabel'>女</td><td class='audio'><audio controls preload='none' src='audio/Base/t_ja_232511b536cd.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/LM-GRPO_TL-WER_w-_LID/t_ja_232511b536cd.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/FM-GRPO_WER_w-o_LID/t_ja_232511b536cd.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/FM+LM-GRPO_WER_w-_LID/t_ja_232511b536cd.wav'></audio></td></tr>
+<tr><td class='glabel'>男</td><td class='audio'><audio controls preload='none' src='audio_male/Base/t_ja_232511b536cd.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/LM-GRPO_TL-WER_w-_LID/t_ja_232511b536cd.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/FM-GRPO_WER_w-o_LID/t_ja_232511b536cd.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/FM+LM-GRPO_WER_w-_LID/t_ja_232511b536cd.wav'></audio></td></tr>
+<tr><td class='prompt' rowspan='2'>关于这次的新产品发布，マーケティングチーム负责制定プロモーション战略，而开发チーム则需要确保系统的安定性を保つ必要があります，大家辛苦了。</td><td class='glabel'>女</td><td class='audio'><audio controls preload='none' src='audio/Base/bq_ja_e334705f8453.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/LM-GRPO_TL-WER_w-_LID/bq_ja_e334705f8453.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/FM-GRPO_WER_w-o_LID/bq_ja_e334705f8453.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/FM+LM-GRPO_WER_w-_LID/bq_ja_e334705f8453.wav'></audio></td></tr>
+<tr><td class='glabel'>男</td><td class='audio'><audio controls preload='none' src='audio_male/Base/bq_ja_e334705f8453.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/LM-GRPO_TL-WER_w-_LID/bq_ja_e334705f8453.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/FM-GRPO_WER_w-o_LID/bq_ja_e334705f8453.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/FM+LM-GRPO_WER_w-_LID/bq_ja_e334705f8453.wav'></audio></td></tr>
+</table></div>
+<h2 class='sec' id='cmn-kor'><span data-i18n-en='Chinese–Korean' data-i18n-zh='中文–韩语'>Chinese–Korean</span></h2>
+<div class='scroll'><table class='comparison-table'><colgroup><col style='width:30%'><col style='width:8%'><col style='width:15.5%'><col style='width:15.5%'><col style='width:15.5%'><col style='width:15.5%'></colgroup><tr><th data-i18n-en='Prompt' data-i18n-zh='文本'>Prompt</th><th data-i18n-en='Voice' data-i18n-zh='音色'>Voice</th><th class='h-base'>Base</th><th class='h-lm'>LM-GRPO</th><th class='h-fm'>FM-GRPO</th><th class='h-joint'>FM+LM-GRPO</th></tr>
+<tr><td class='prompt' rowspan='2'>本季度的财务汇报(재무 보고)显示，公司的现金流(현금 흐름)状况有所改善。这主要得益于应收账款(외상 매출금)回收率的提升(회수율 향상)，以及库存周转率(재고 회전율)的优化。财务部(재무부)建议在下个季度继续严格执行信用控制政策(신용 통제 정책)，以进一步降低坏账风险(부실 채권 위험)。</td><td class='glabel'>女</td><td class='audio'><audio controls preload='none' src='audio/Base/bq_ko_1f09b13352c6.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/LM-GRPO_TL-WER_w-_LID/bq_ko_1f09b13352c6.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/FM-GRPO_WER_w-o_LID/bq_ko_1f09b13352c6.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/FM+LM-GRPO_WER_w-_LID/bq_ko_1f09b13352c6.wav'></audio></td></tr>
+<tr><td class='glabel'>男</td><td class='audio'><audio controls preload='none' src='audio_male/Base/bq_ko_1f09b13352c6.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/LM-GRPO_TL-WER_w-_LID/bq_ko_1f09b13352c6.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/FM-GRPO_WER_w-o_LID/bq_ko_1f09b13352c6.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/FM+LM-GRPO_WER_w-_LID/bq_ko_1f09b13352c6.wav'></audio></td></tr>
+<tr><td class='prompt' rowspan='2'>生成对抗网络由两个神经网组成，它们通过相互博弈来优化매개변수。经过大量데이터 집합的训练，生成器能够创造出极其逼真的图像，达到了以假乱真的视觉效果。</td><td class='glabel'>女</td><td class='audio'><audio controls preload='none' src='audio/Base/t_ko_92a65620f469.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/LM-GRPO_TL-WER_w-_LID/t_ko_92a65620f469.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/FM-GRPO_WER_w-o_LID/t_ko_92a65620f469.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/FM+LM-GRPO_WER_w-_LID/t_ko_92a65620f469.wav'></audio></td></tr>
+<tr><td class='glabel'>男</td><td class='audio'><audio controls preload='none' src='audio_male/Base/t_ko_92a65620f469.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/LM-GRPO_TL-WER_w-_LID/t_ko_92a65620f469.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/FM-GRPO_WER_w-o_LID/t_ko_92a65620f469.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/FM+LM-GRPO_WER_w-_LID/t_ko_92a65620f469.wav'></audio></td></tr>
+</table></div>
+<h2 class='sec' id='cmn-deu'><span data-i18n-en='Chinese–German' data-i18n-zh='中文–德语'>Chinese–German</span></h2>
+<div class='scroll'><table class='comparison-table'><colgroup><col style='width:30%'><col style='width:8%'><col style='width:15.5%'><col style='width:15.5%'><col style='width:15.5%'><col style='width:15.5%'></colgroup><tr><th data-i18n-en='Prompt' data-i18n-zh='文本'>Prompt</th><th data-i18n-en='Voice' data-i18n-zh='音色'>Voice</th><th class='h-base'>Base</th><th class='h-lm'>LM-GRPO</th><th class='h-fm'>FM-GRPO</th><th class='h-joint'>FM+LM-GRPO</th></tr>
+<tr><td class='prompt' rowspan='2'>昨晚 zocken 的时候，unser Team 简直太坑了，Gegner 随便一个 Angriff 我们就团灭，连 die Ausrüstung 都掉光了，真的是 eine Niederlage，下次绝对不跟 sie 组队了，太坑爹了。</td><td class='glabel'>女</td><td class='audio'><audio controls preload='none' src='audio/Base/t_de_1dec9fc46838.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/LM-GRPO_TL-WER_w-_LID/t_de_1dec9fc46838.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/FM-GRPO_WER_w-o_LID/t_de_1dec9fc46838.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/FM+LM-GRPO_WER_w-_LID/t_de_1dec9fc46838.wav'></audio></td></tr>
+<tr><td class='glabel'>男</td><td class='audio'><audio controls preload='none' src='audio_male/Base/t_de_1dec9fc46838.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/LM-GRPO_TL-WER_w-_LID/t_de_1dec9fc46838.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/FM-GRPO_WER_w-o_LID/t_de_1dec9fc46838.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/FM+LM-GRPO_WER_w-_LID/t_de_1dec9fc46838.wav'></audio></td></tr>
+<tr><td class='prompt' rowspan='2'>在重要的客户沟通会议中，我们要明确展示最新的 Produktroadmap，重点强调新 Feature 的核心优势，并收集他们的真实 Feedback 以优化后续的 Entwicklung 战略方向和 Release 计划。</td><td class='glabel'>女</td><td class='audio'><audio controls preload='none' src='audio/Base/t_de_04bedd993b1f.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/LM-GRPO_TL-WER_w-_LID/t_de_04bedd993b1f.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/FM-GRPO_WER_w-o_LID/t_de_04bedd993b1f.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/FM+LM-GRPO_WER_w-_LID/t_de_04bedd993b1f.wav'></audio></td></tr>
+<tr><td class='glabel'>男</td><td class='audio'><audio controls preload='none' src='audio_male/Base/t_de_04bedd993b1f.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/LM-GRPO_TL-WER_w-_LID/t_de_04bedd993b1f.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/FM-GRPO_WER_w-o_LID/t_de_04bedd993b1f.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/FM+LM-GRPO_WER_w-_LID/t_de_04bedd993b1f.wav'></audio></td></tr>
+</table></div>
+<h2 class='sec' id='cmn-fra'><span data-i18n-en='Chinese–French' data-i18n-zh='中文–法语'>Chinese–French</span></h2>
+<div class='scroll'><table class='comparison-table'><colgroup><col style='width:30%'><col style='width:8%'><col style='width:15.5%'><col style='width:15.5%'><col style='width:15.5%'><col style='width:15.5%'></colgroup><tr><th data-i18n-en='Prompt' data-i18n-zh='文本'>Prompt</th><th data-i18n-en='Voice' data-i18n-zh='音色'>Voice</th><th class='h-base'>Base</th><th class='h-lm'>LM-GRPO</th><th class='h-fm'>FM-GRPO</th><th class='h-joint'>FM+LM-GRPO</th></tr>
+<tr><td class='prompt' rowspan='2'>比较级的不规则变化需牢记。bon 的比较级不是 plus bon，而是 meilleur。看这句 Ce gâteau est meilleur que l'autre，直接用 meilleur 表示这个蛋糕比另一个更好吃。同样 mal 的比较级是 pire。做语法分析时，一定要避开 plus bon 这种典型错误，掌握这些特殊形式。</td><td class='glabel'>女</td><td class='audio'><audio controls preload='none' src='audio/Base/t_fr_892c13412973.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/LM-GRPO_TL-WER_w-_LID/t_fr_892c13412973.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/FM-GRPO_WER_w-o_LID/t_fr_892c13412973.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/FM+LM-GRPO_WER_w-_LID/t_fr_892c13412973.wav'></audio></td></tr>
+<tr><td class='glabel'>男</td><td class='audio'><audio controls preload='none' src='audio_male/Base/t_fr_892c13412973.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/LM-GRPO_TL-WER_w-_LID/t_fr_892c13412973.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/FM-GRPO_WER_w-o_LID/t_fr_892c13412973.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/FM+LM-GRPO_WER_w-_LID/t_fr_892c13412973.wav'></audio></td></tr>
+<tr><td class='prompt' rowspan='2'>法国 Institut Pasteur 的顶尖科学家们在 recherche fondamentale 方面取得了重要新发现，这将有助于加速针对多种热带疾病的 développement de vaccins，造福全球广大患者。</td><td class='glabel'>女</td><td class='audio'><audio controls preload='none' src='audio/Base/t_fr_3fd7cb1ea6b6.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/LM-GRPO_TL-WER_w-_LID/t_fr_3fd7cb1ea6b6.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/FM-GRPO_WER_w-o_LID/t_fr_3fd7cb1ea6b6.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/FM+LM-GRPO_WER_w-_LID/t_fr_3fd7cb1ea6b6.wav'></audio></td></tr>
+<tr><td class='glabel'>男</td><td class='audio'><audio controls preload='none' src='audio_male/Base/t_fr_3fd7cb1ea6b6.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/LM-GRPO_TL-WER_w-_LID/t_fr_3fd7cb1ea6b6.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/FM-GRPO_WER_w-o_LID/t_fr_3fd7cb1ea6b6.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/FM+LM-GRPO_WER_w-_LID/t_fr_3fd7cb1ea6b6.wav'></audio></td></tr>
+</table></div>
+<h2 class='sec' id='cmn-spa'><span data-i18n-en='Chinese–Spanish' data-i18n-zh='中文–西班牙语'>Chinese–Spanish</span></h2>
+<div class='scroll'><table class='comparison-table'><colgroup><col style='width:30%'><col style='width:8%'><col style='width:15.5%'><col style='width:15.5%'><col style='width:15.5%'><col style='width:15.5%'></colgroup><tr><th data-i18n-en='Prompt' data-i18n-zh='文本'>Prompt</th><th data-i18n-en='Voice' data-i18n-zh='音色'>Voice</th><th class='h-base'>Base</th><th class='h-lm'>LM-GRPO</th><th class='h-fm'>FM-GRPO</th><th class='h-joint'>FM+LM-GRPO</th></tr>
+<tr><td class='prompt' rowspan='2'>Perdón，同学们，当我们在西班牙街头不小心撞到别人时，一定要及时表达歉意，而受到帮助后则要说 muchas gracias。</td><td class='glabel'>女</td><td class='audio'><audio controls preload='none' src='audio/Base/t_es_918df52b6906.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/LM-GRPO_TL-WER_w-_LID/t_es_918df52b6906.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/FM-GRPO_WER_w-o_LID/t_es_918df52b6906.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/FM+LM-GRPO_WER_w-_LID/t_es_918df52b6906.wav'></audio></td></tr>
+<tr><td class='glabel'>男</td><td class='audio'><audio controls preload='none' src='audio_male/Base/t_es_918df52b6906.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/LM-GRPO_TL-WER_w-_LID/t_es_918df52b6906.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/FM-GRPO_WER_w-o_LID/t_es_918df52b6906.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/FM+LM-GRPO_WER_w-_LID/t_es_918df52b6906.wav'></audio></td></tr>
+<tr><td class='prompt' rowspan='2'>在托莱多 perderse en la ciudad 的小巷里，发现了一家 tienda de recuerdos，买了些 recuerdos inolvidables，qué ciudad tan bonita。</td><td class='glabel'>女</td><td class='audio'><audio controls preload='none' src='audio/Base/t_es_af2d0b76a01b.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/LM-GRPO_TL-WER_w-_LID/t_es_af2d0b76a01b.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/FM-GRPO_WER_w-o_LID/t_es_af2d0b76a01b.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio/FM+LM-GRPO_WER_w-_LID/t_es_af2d0b76a01b.wav'></audio></td></tr>
+<tr><td class='glabel'>男</td><td class='audio'><audio controls preload='none' src='audio_male/Base/t_es_af2d0b76a01b.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/LM-GRPO_TL-WER_w-_LID/t_es_af2d0b76a01b.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/FM-GRPO_WER_w-o_LID/t_es_af2d0b76a01b.wav'></audio></td><td class='audio'><audio controls preload='none' src='audio_male/FM+LM-GRPO_WER_w-_LID/t_es_af2d0b76a01b.wav'></audio></td></tr>
+</table></div>
+</main><footer><span data-lang='en'>cmn-X Bench interactive demo · 96 comparison samples · Six Mandarin-centered language pairs</span><span data-lang='zh-CN' lang='zh-CN' hidden>cmn-X Bench 交互式演示 · 96 个对比音频 · 六种以普通话为主的语言组合</span></footer>
+<script id='language-switch'>
+function setLanguage(language) {
+  const activeLanguage = language === 'zh-CN' ? 'zh-CN' : 'en';
+  document.documentElement.lang = activeLanguage;
+  document.body.dataset.language = activeLanguage;
+
+  document.querySelectorAll('[data-lang]').forEach(element => {
+    element.hidden = element.dataset.lang !== activeLanguage;
+  });
+
+  document.querySelectorAll('[data-i18n-en]').forEach(element => {
+    element.textContent = activeLanguage === 'zh-CN'
+      ? element.dataset.i18nZh
+      : element.dataset.i18nEn;
+  });
+
+  document.querySelectorAll('[data-language-option]').forEach(button => {
+    const isActive = button.dataset.languageOption === activeLanguage;
+    button.classList.toggle('active', isActive);
+    button.setAttribute('aria-pressed', String(isActive));
+  });
+
+  document.querySelectorAll('.glabel').forEach(element => {
+    if (!element.dataset.gender) {
+      element.dataset.gender = element.textContent.trim() === '女' ? 'female' : 'male';
+    }
+    element.textContent = activeLanguage === 'zh-CN'
+      ? (element.dataset.gender === 'female' ? '女' : '男')
+      : (element.dataset.gender === 'female' ? 'Female' : 'Male');
+  });
+}
+
+setLanguage('en');
+</script>
+</body></html>
