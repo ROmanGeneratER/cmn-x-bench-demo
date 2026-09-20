@@ -69,10 +69,6 @@ border-radius:14px;padding:14px;box-shadow:0 12px 32px #1d29390b}
 .architecture-link{display:block;line-height:0}
 .architecture img{width:100%;height:auto;margin:0;border:0;border-radius:8px;background:#fff}
 .architecture figcaption{padding:8px 8px 2px;text-align:center;color:var(--mut);font-size:12.5px}
-.protocol{max-width:1040px;margin:16px auto 0;border:1px solid var(--line);border-radius:10px;
-background:#fff;padding:0 16px;color:#475467;font-size:13px}
-.protocol summary{cursor:pointer;padding:10px 0;font-weight:700;color:#344054}
-.protocol p{margin:0 0 12px}
 .scroll{overflow-x:auto;overscroll-behavior-x:contain;scrollbar-gutter:stable;padding-bottom:8px;}
 table{border-collapse:separate;border-spacing:0;width:100%;background:#fff;border:1px solid var(--line);
 border-radius:10px;overflow:hidden}
@@ -91,10 +87,19 @@ td.glabel{text-align:center;font-weight:700;color:var(--mut);background:#fafafa;
 td.audio{text-align:center;}
 td.audio audio{display:block;width:100%;max-width:none;height:34px;}
 td.none{color:#aaa;text-align:center;font-size:12px;}
-table.rank{table-layout:fixed;min-width:920px;max-width:none;margin:0;}
-table.rank.rank-detail{min-width:1120px;}
-table.rank th,table.rank td{text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums;}
+table.rank{table-layout:fixed;min-width:820px;max-width:1120px;margin:0 auto;
+border-radius:12px;box-shadow:0 8px 22px #1d29390a;}
+table.rank.rank-detail{min-width:1020px;max-width:1240px;}
+table.rank th,table.rank td{padding:5px 7px;line-height:1.28;text-align:center;
+white-space:nowrap;font-size:12.5px;font-variant-numeric:tabular-nums;}
+table.rank th{background:#f2f5f9;border-bottom-color:#cbd5e1;color:#26364d;}
+table.rank tr:not(:first-child):hover td{background:#f4f8ff;}
+table.rank tr.r-lm td:first-child{border-left:3px solid #7aa2f7;}
+table.rank tr.r-fm td:first-child{border-left:3px solid #55b989;}
+table.rank tr.r-joint td:first-child{border-left:3px solid #eead61;}
 table.rank th:nth-child(-n+3),table.rank td:nth-child(-n+3){text-align:left;}
+.rank-switch{text-align:center;margin:4px auto 9px;}
+.rank-panel{padding-bottom:4px;}
 table.comparison-table{table-layout:fixed;min-width:1120px;}
 table.comparison-table th{text-align:center;}
 table.comparison-table th:first-child{text-align:left;}
@@ -158,10 +163,9 @@ table.prompttbl td:nth-child(3){font-size:13px;color:#444;}
 <tr><td class='cell' data-i18n-en='Female reference voice' data-i18n-zh='女性参考音色'>Female reference voice</td><td class='audio'><audio controls preload='none' src='prompts/common_voice_zh-CN_41697648.mp3'></audio></td><td class='hyp'>之前看到一个视频说某国际大学的一个研究人工智能的博士发表了一篇题为大语言模型会自发产生智能的论文这是对这所国际百年名校的最大耻辱</td></tr>
 <tr><td class='cell' data-i18n-en='Male reference voice' data-i18n-zh='男性参考音色'>Male reference voice</td><td class='audio'><audio controls preload='none' src='prompts/common_voice_zh-CN_41581691.mp3'></audio></td><td class='hyp'>语音识别是实现人机交互的一种重要途径是自然语言处理的技术环节随着人工智能技术的发展人机交互等大量应用场景存在着流逝语音识别的需求</td></tr>
 </table></div>
-<details class='protocol'><summary data-i18n-en='Demo protocol' data-i18n-zh='演示说明'>Demo protocol</summary><p data-lang='en'>The female samples use the standard text-normalization pipeline. The male samples were synthesized with <code>text_frontend=False</code> because the normalization service was unavailable at synthesis time. For a controlled listening comparison, compare systems within the same voice row.</p><p data-lang='zh-CN' lang='zh-CN' hidden>女性样本采用标准文本规范化流程；男性样本生成时因规范化服务不可用，使用了 <code>text_frontend=False</code>。进行受控听感比较时，请在同一音色行内比较不同系统。</p></details>
 <h2 class='sec' id='rank'><span data-i18n-en='Overall ranking' data-i18n-zh='总体结果'>Overall ranking</span><span data-lang='en'>CMN-X Bench macro TL-WER (%), best checkpoint per configuration; lower is better</span><span data-lang='zh-CN' lang='zh-CN' hidden>CMN-X Bench 宏平均 TL-WER（%）；每项配置取最佳检查点，数值越低越好</span></h2>
-<div style='text-align:center'><div class='language-switch' role='group' aria-label='Table view'><button type='button' class='active' data-rank='overall' onclick="showRank('overall')">Overall</button><button type='button' data-rank='cs90' onclick="showRank('cs90')">CMN-X Bench</button><button type='button' data-rank='mm' onclick="showRank('mm')">Minimax</button></div></div>
-<div id='rank-overall' class='scroll'><table class='rank rank-overall'><colgroup><col style='width:18%'><col style='width:14%'><col style='width:12%'><col style='width:11.2%'><col style='width:11.2%'><col style='width:11.2%'><col style='width:11.2%'><col style='width:11.2%'></colgroup><tr><th>Model</th><th>Content</th><th>LID</th><th>CER</th><th>TL-WER</th><th>SIM</th><th>DNS</th><th>MM-ALL</th></tr>
+<div class='rank-switch'><div class='language-switch' role='group' aria-label='Table view'><button type='button' class='active' data-rank='overall' onclick="showRank('overall')">Overall</button><button type='button' data-rank='cs90' onclick="showRank('cs90')">CMN-X Bench</button><button type='button' data-rank='mm' onclick="showRank('mm')">Minimax</button></div></div>
+<div id='rank-overall' class='scroll rank-panel'><table class='rank rank-overall'><colgroup><col style='width:18%'><col style='width:14%'><col style='width:12%'><col style='width:11.2%'><col style='width:11.2%'><col style='width:11.2%'><col style='width:11.2%'><col style='width:11.2%'></colgroup><tr><th>Model</th><th>Content</th><th>LID</th><th>CER</th><th>TL-WER</th><th>SIM</th><th>DNS</th><th>MM-ALL</th></tr>
 <tr class='r-base'><td>&ndash;</td><td>Base (CosyVoice3)</td><td>&ndash;</td><td class='m'>6.75</td><td class='m'>15.41</td><td class='m'>0.875</td><td class='m'>4.08</td><td class='m'>9.85</td></tr>
 <tr class='r-lm'><td>LM-GRPO</td><td>TL-WER</td><td>w/ LID</td><td class='m'>3.68</td><td class='m'>7.75</td><td class='m'>0.926</td><td class='m'>4.24</td><td class='m'>8.18</td></tr>
 <tr class='r-lm'><td>LM-GRPO</td><td>TL-WER</td><td>w/o LID</td><td class='m'>4.03</td><td class='m'>10.29</td><td class='m'>0.906</td><td class='m'>4.17</td><td class='m'>8.84</td></tr>
@@ -175,7 +179,7 @@ table.prompttbl td:nth-child(3){font-size:13px;color:#444;}
 <tr class='r-joint'><td>FM+LM-GRPO</td><td>TL-WER</td><td>w/o LID</td><td class='m'>3.76</td><td class='m'>9.05</td><td class='m'>0.930</td><td class='m'>4.10</td><td class='m'>8.45</td></tr>
 <tr class='r-joint'><td>FM+LM-GRPO</td><td>WER</td><td>w/ LID</td><td class='m'>3.33</td><td class='m'>8.04</td><td class='m'>0.929</td><td class='m'>4.17</td><td class='m'>8.50</td></tr>
 <tr class='r-joint'><td>FM+LM-GRPO</td><td>WER</td><td>w/o LID</td><td class='m'>3.79</td><td class='m'>8.54</td><td class='m'>0.920</td><td class='m'>4.27</td><td class='m'>8.22</td></tr></table></div>
-<div id='rank-cs90' class='scroll' style='display:none'><table class='rank rank-detail'><colgroup><col style='width:18%'><col style='width:12%'><col style='width:10%'><col style='width:7.5%'><col style='width:7.5%'><col style='width:7.5%'><col style='width:7.5%'><col style='width:7.5%'><col style='width:7.5%'><col style='width:7.5%'><col style='width:7.5%'></colgroup><tr><th>Model</th><th>Content</th><th>LID</th><th>EN</th><th>JA</th><th>KO</th><th>DE</th><th>FR</th><th>ES</th><th>ALL</th><th>&Delta;TL-WER</th></tr>
+<div id='rank-cs90' class='scroll rank-panel' style='display:none'><table class='rank rank-detail'><colgroup><col style='width:18%'><col style='width:12%'><col style='width:10%'><col style='width:7.5%'><col style='width:7.5%'><col style='width:7.5%'><col style='width:7.5%'><col style='width:7.5%'><col style='width:7.5%'><col style='width:7.5%'><col style='width:7.5%'></colgroup><tr><th>Model</th><th>Content</th><th>LID</th><th>EN</th><th>JA</th><th>KO</th><th>DE</th><th>FR</th><th>ES</th><th>ALL</th><th>&Delta;TL-WER</th></tr>
 <tr class='r-base'><td>&ndash;</td><td>Base (CosyVoice3)</td><td>&ndash;</td><td class='m'>0.47</td><td class='m'>32.81</td><td class='m'>29.51</td><td class='m'>14.50</td><td class='m'>9.93</td><td class='m'>5.22</td><td class='m'>15.41</td><td class='m dsh'>&ndash;</td></tr>
 <tr class='r-lm'><td>LM-GRPO</td><td>TL-WER</td><td>w/ LID</td><td class='m'>1.50</td><td class='m'>20.00</td><td class='m'>16.94</td><td class='m'>5.02</td><td class='m'>1.67</td><td class='m'>1.35</td><td class='m'>7.75</td><td class='m dlt'>-7.66</td></tr>
 <tr class='r-lm'><td>LM-GRPO</td><td>TL-WER</td><td>w/o LID</td><td class='m'>0.84</td><td class='m'>29.21</td><td class='m'>16.94</td><td class='m'>8.79</td><td class='m'>1.78</td><td class='m'>4.21</td><td class='m'>10.29</td><td class='m dlt'>-5.12</td></tr>
@@ -189,7 +193,7 @@ table.prompttbl td:nth-child(3){font-size:13px;color:#444;}
 <tr class='r-joint'><td>FM+LM-GRPO</td><td>TL-WER</td><td>w/o LID</td><td class='m'>0.09</td><td class='m'>29.21</td><td class='m'>16.39</td><td class='m'>5.86</td><td class='m'>0.21</td><td class='m'>2.53</td><td class='m'>9.05</td><td class='m dlt'>-6.36</td></tr>
 <tr class='r-joint'><td>FM+LM-GRPO</td><td>WER</td><td>w/ LID</td><td class='m'>0.38</td><td class='m'>22.92</td><td class='m'>14.21</td><td class='m'>5.02</td><td class='m'>1.67</td><td class='m'>4.04</td><td class='m'>8.04</td><td class='m dlt'>-7.37</td></tr>
 <tr class='r-joint'><td>FM+LM-GRPO</td><td>WER</td><td>w/o LID</td><td class='m'>1.13</td><td class='m'>12.81</td><td class='m'>19.13</td><td class='m'>13.39</td><td class='m'>1.57</td><td class='m'>3.20</td><td class='m'>8.54</td><td class='m dlt'>-6.87</td></tr></table></div>
-<div id='rank-mm' class='scroll' style='display:none'><table class='rank rank-detail'><colgroup><col style='width:18%'><col style='width:12%'><col style='width:10%'><col style='width:6.666%'><col style='width:6.666%'><col style='width:6.666%'><col style='width:6.666%'><col style='width:6.666%'><col style='width:6.666%'><col style='width:6.666%'><col style='width:6.666%'><col style='width:6.666%'></colgroup><tr><th>Model</th><th>Content</th><th>LID</th><th>ZH</th><th>EN</th><th>JA</th><th>KO</th><th>DE</th><th>FR</th><th>ES</th><th>ALL</th><th>&Delta;WER</th></tr>
+<div id='rank-mm' class='scroll rank-panel' style='display:none'><table class='rank rank-detail'><colgroup><col style='width:18%'><col style='width:12%'><col style='width:10%'><col style='width:6.666%'><col style='width:6.666%'><col style='width:6.666%'><col style='width:6.666%'><col style='width:6.666%'><col style='width:6.666%'><col style='width:6.666%'><col style='width:6.666%'><col style='width:6.666%'></colgroup><tr><th>Model</th><th>Content</th><th>LID</th><th>ZH</th><th>EN</th><th>JA</th><th>KO</th><th>DE</th><th>FR</th><th>ES</th><th>ALL</th><th>&Delta;WER</th></tr>
 <tr class='r-base'><td>&ndash;</td><td>Base (CosyVoice3)</td><td>&ndash;</td><td class='m'>1.38</td><td class='m'>2.25</td><td class='m'>52.46</td><td class='m'>5.81</td><td class='m'>0.80</td><td class='m'>4.96</td><td class='m'>1.25</td><td class='m'>9.85</td><td class='m dsh'>&ndash;</td></tr>
 <tr class='r-lm'><td>LM-GRPO</td><td>TL-WER</td><td>w/ LID</td><td class='m'>1.25</td><td class='m'>2.90</td><td class='m'>44.70</td><td class='m'>2.09</td><td class='m'>1.50</td><td class='m'>3.60</td><td class='m'>1.22</td><td class='m'>8.18</td><td class='m dlt'>-1.67</td></tr>
 <tr class='r-lm'><td>LM-GRPO</td><td>TL-WER</td><td>w/o LID</td><td class='m'>1.38</td><td class='m'>3.31</td><td class='m'>48.12</td><td class='m'>3.66</td><td class='m'>0.67</td><td class='m'>3.70</td><td class='m'>1.05</td><td class='m'>8.84</td><td class='m dlt'>-1.01</td></tr>
